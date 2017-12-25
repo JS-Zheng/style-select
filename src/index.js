@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Cookies from 'js-cookie'
 
+
+var env = process.env;
+console.log(`==== ${env.NAME} ${env.NODE_ENV} v${env.VERSION} ====`);
+
 export default {
   createStyleGroup: function (groupId, hintText = '--please choose--', cssPrefix = 'style-select', supportNoneStyle = true) {
 
@@ -61,7 +65,7 @@ export default {
           return this.state.currentStyle ? this.state.currentStyle.name : null;
         },
         cookieName: function () {
-          return this.state.groupId + '-' + 'style';
+          return this.state.cssPrefix + '-' + this.state.groupId;
         },
         targetHref: function () {
           let style = this.state.currentStyle;
@@ -71,7 +75,8 @@ export default {
             + (style.supportMinCss ? '.min' : '' ) + '.css';
         },
         linkId: function () {
-          return this.state.groupId + '-' + 'style' + '-' + 'link';
+          // Prevent id duplication
+          return getSimpleStr(5) + '-' + this.state.groupId;
         }
       },
       methods: {
