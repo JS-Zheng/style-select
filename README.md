@@ -15,10 +15,12 @@ However, the style I like doesn't mean that other users will also like it.
 Style-Select makes things easy:
 <img src="demo/img/hljs-style-select.png" alt="hljs-style-select.png" width="500px">
 
-HTTP(s) requests are sent only when new styles are selected, rather than redundant prefetch.
-Of course, it can be used not only for Highlight.js but **for any style group**.
+<br>
 
-See more demos [here](https://js-zheng.github.io/Style-Select/demo/).
+HTTP(s) requests are sent only when new styles are selected, rather than redundant prefetch.
+Of course, it can be used not only for Highlight.js but **for any styles**.
+
+See more demos [here](https://js-zheng.github.io/style-select/demo/).
 
 ---
 
@@ -26,7 +28,8 @@ See more demos [here](https://js-zheng.github.io/Style-Select/demo/).
 
 
 ### HTML
-Before everything starts, you have to **load [Vue.js](https://github.com/vuejs/vue) first**! Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redundant loading.
+Before everything starts, you have to **load [Vue.js](https://github.com/vuejs/vue) first**!  
+Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redundant loading.
 
 ```html
 <html>
@@ -37,8 +40,6 @@ Before everything starts, you have to **load [Vue.js](https://github.com/vuejs/v
   ...
 <head>
 ```
-
-<br>
  
 ### NPM
 ```
@@ -81,15 +82,20 @@ The main concept of Style-Select is to create a **style group**:
 ```javascript
 var yourStyleGroup = StyleSelect.createStyleGroup('groupId');
 ```
-This is purely a container and will **not** cause any **page render**.
 
-<br>
+This is purely a container and will **not** cause any **page render**. 
 
-More Detail Usage:
+In fact, StyleGroup is just a vue instance, so you can still mount it on any HTML element (optional). This will be useful for external access to information, such `currentStyleName`, `cssPrefix`, `stylesList`, ..., cookieOptions.
+```javascript
+yourStyleGroup.$mount(domElement or domSelector)
+```
+
+Detail Usage:
 ```javascript
 // @returns a vue instance
 function createStyleGroup (groupId, hintText = '--please choose--', cssPrefix = 'style-select', supportNoneStyle = true)
 ```
+<br>
 
 ### Add Styles
 
@@ -101,11 +107,12 @@ Once the StyleGroup is created, you can start adding styles to it.
  * @param styleNames -- {Array}
  * @param supportMinCss -- If the file extension exists `.min`, it must be set to true
  * 
- * @returns true if styles are is added successfully.
+ * @returns true if styles are added successfully.
  */
 yourStyleGroup.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
   ['agate', 'dracula', 'vs2015'], true);
 ```
+<br>
 
 ### Default Style
 
@@ -118,7 +125,7 @@ yourStyleGroup.setDefaultStyle(baseUrl, name, supportMinCss);
 ```
 It should be noted that, unlike `addStyles`, the second parameter (i.e., name) needs to be put into a **string**.
 
-
+<br>
 
 ### StyleSelect
 
@@ -133,9 +140,9 @@ var select = yourStyleGroup.createSelect("#elementId");
 var select2 = yourStyleGroup.createSelect(domElement);
 ```
 
-<br>
-
 Even you can add some private styles, text or separator to each menu:
+
+<img src="demo/img/select-menu.png" alt="select-menu.png" width="350px">
 
 ```javascript
 select.addStyles('', ['pink', 'blue'], false);
