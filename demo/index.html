@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Style-Select Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="../dist/style-select.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+
+<div class="container">
+    <div id="hljs-demo">
+        <h2>
+            Hljs<span v-if="state.currentStyle">: {{currentStyleName}}</span>
+        </h2>
+        <pre><code>public class Main {
+    public static void main(String[] args) {
+
+        // Just a comment
+        System.out.println("Hello, World!");
+    }
+}
+
+// Result:
+// Hello, World!</code></pre>
+        <div class="btns">
+            <div id="prev" class="btn">Prev</div>
+            <div id="auto" class="btn">Auto</div>
+            <div id="next" class="btn">Next</div>
+        </div>
+        <div>Total:
+            <div id="app"></div>
+        </div>
+        <div>My Favorites:
+            <div id="app2"></div>
+        </div>
+        <div>Test:
+            <div id="app3"></div>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h2>Other</h2>
+        <div id="app4"></div>
+        <div id="app5"></div>
+    </div>
+</div>
+
+<script>
+  var hljsStyles = StyleSelect.createStyleGroup('hljs').$mount("#hljs-demo");
+
+  var app = hljsStyles.createSelect("#app");
+  var app2 = hljsStyles.createSelect("#app2");
+  var app3 = hljsStyles.createSelect("#app3");
+
+  app.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+    ['agate', 'androidstudio', 'arduino-light', 'arta', 'ascetic', 'atelier-cave-dark', 'atelier-cave-light', 'atelier-dune-dark', 'atelier-dune-light', 'atelier-estuary-dark', 'atelier-estuary-light', 'atelier-forest-dark', 'atelier-forest-light', 'atelier-heath-dark', 'atelier-heath-light', 'atelier-lakeside-dark', 'atelier-lakeside-light', 'atelier-plateau-dark', 'atelier-plateau-light', 'atelier-savanna-dark', 'atelier-savanna-light', 'atelier-seaside-dark', 'atelier-seaside-light', 'atelier-sulphurpool-dark', 'atelier-sulphurpool-light', 'atom-one-dark', 'atom-one-light', 'brown-paper', 'codepen-embed', 'color-brewer', 'darcula', 'dark', 'darkula', 'default', 'docco', 'dracula', 'far', 'foundation', 'github-gist', 'github', 'googlecode', 'grayscale', 'gruvbox-dark', 'gruvbox-light', 'hopscotch', 'hybrid', 'idea', 'ir-black', 'kimbie.dark', 'kimbie.light', 'magula', 'mono-blue', 'monokai-sublime', 'monokai', 'obsidian', 'ocean', 'paraiso-dark', 'paraiso-light', 'pojoaque', 'purebasic', 'qtcreator_dark', 'qtcreator_light', 'railscasts', 'rainbow', 'routeros', 'school-book', 'solarized-dark', 'solarized-light', 'sunburst', 'tomorrow-night-blue', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'tomorrow-night', 'tomorrow', 'vs', 'vs2015', 'xcode', 'xt256', 'zenburn']
+    , true);
+  // Test duplicated name
+  app.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+    ['arta', 'ascetic'], true);
+
+
+  app2.addText('              ');
+  app2.addSeparator(7);
+  app2.addText('--cloudflare--');
+  app2.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+    ["agate", "androidstudio", "atelier-forest-light", "atom-one-dark", "codepen-embed", "dracula", "github-gist", "hybrid", "monokai-sublime", "ocean", "railscasts", "solarized-light", "sunburst", "tomorrow-night", "vs2015"]
+    , true);
+
+
+  // Even if the names are the same, they are considered different if use other baseUrl.
+  app3.addText('--rawgit--');
+  app3.addStyles('https://rawgit.com/isagalaev/highlight.js/master/src/styles/',
+    ['arta', 'ascetic'], false);
+
+  hljsStyles.setDefaultStyle('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/', 'dracula', true);
+  hljsStyles.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+    ['androidstudio', 'arta', 'ascetic'], true);
+
+  // Using other methods by VanillaJS.
+  var intervalId, prevBtn = document.querySelector('#prev'), autoBtn = document.querySelector('#auto'),
+    nextBtn = document.querySelector('#next');
+  prevBtn.addEventListener('click', function () {
+    intervalId && (clearInterval(intervalId), intervalId = null), app.moveIndex(false)
+  }), autoBtn.addEventListener('click', function () {
+    if (intervalId) return;
+    intervalId = setInterval(function () {
+      app.moveIndex(true)
+    }, 2e3)
+  }), nextBtn.addEventListener('click', function () {
+    intervalId && (clearInterval(intervalId), intervalId = null), app.moveIndex(true)
+  });
+
+
+  var sharedStyles = {
+    baseUrl: 'style',
+    names: ['pink', 'blue'], // Array
+    supportMinCss: false
+  };
+
+  var defaultStyle = {
+    baseUrl: '',
+    name: 'gray', // String
+    supportMinCss: false
+  };
+
+  // Thanks for my sister -- Nana.
+  var otherStyles = StyleSelect.createStyleGroup('other', '--請選擇--', +'🤪' + 'a', false);
+
+  // shared styles
+  otherStyles.addStyles(sharedStyles.baseUrl, sharedStyles.names, sharedStyles.supportMinCss);
+
+  // If default style doesn't exist, insert to first position automatically.
+  otherStyles.setDefaultStyle(defaultStyle.baseUrl, defaultStyle.name, defaultStyle.supportMinCss);
+
+  var app4 = otherStyles.createSelect("#app4");
+  var app5 = otherStyles.createSelect("#app5");
+
+  otherStyles.addSeparator();
+
+  // private styles
+  app4.addText('~~~~~~~~~');
+  app4.addStyles('style', ['0'], false);
+
+</script>
+</body>
+</html>
