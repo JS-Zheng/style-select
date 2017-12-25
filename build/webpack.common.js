@@ -1,5 +1,4 @@
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -8,9 +7,6 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
     }
   },
-  plugins: [
-    new UglifyJSPlugin()
-  ],
   externals: {
     vue: {
       root: 'Vue',
@@ -21,7 +17,7 @@ module.exports = {
   },
   output: {
     filename: 'style-select.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     library: 'StyleSelect',
     libraryTarget: "umd",
     libraryExport: 'default'
