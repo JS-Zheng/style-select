@@ -1,6 +1,6 @@
 {
   "name": "style-select",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A JavaScript library for switching CSS.",
   "main": "./dist/style-select.js",
   "module": "./dist/code-line.esm.js",

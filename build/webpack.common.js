@@ -3,7 +3,12 @@ const path = require('path');
 module.exports = {
   entry: './src/index.js',
   externals: {
-    'vue/dist/vue.esm': 'Vue'
+    'vue/dist/vue.esm': {
+      root: 'Vue',
+      commonjs: 'vue/dist/vue.esm',
+      commonjs2: 'vue/dist/vue.esm',
+      amd: 'vue/dist/vue.esm'
+    }
   },
   output: {
     filename: 'style-select.js',
