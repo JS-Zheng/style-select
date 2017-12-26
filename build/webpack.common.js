@@ -2,25 +2,21 @@ const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
-    }
-  },
   externals: {
-    vue: {
-      root: 'Vue',
-      commonjs: 'vue',
-      commonjs2: 'vue',
-      amd: 'vue'
-    }
+    'vue/dist/vue.esm': 'Vue'
   },
   output: {
     filename: 'style-select.js',
     path: path.resolve(__dirname, '../dist'),
     library: 'StyleSelect',
     libraryTarget: "umd",
-    libraryExport: 'default'
+    libraryExport: 'default',
+    auxiliaryComment: {
+      root: "Root",
+      commonjs: "CommonJS",
+      commonjs2: "CommonJS2",
+      amd: "AMD"
+    }
   },
   module: {
     rules: [
