@@ -45,31 +45,9 @@ Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redu
 ```
 npm install style-select
 ```
-If you use some module bundlers such as [Webpack](https://github.com/webpack/webpack),
-don't forget to use **Runtime Version Vue.js**.  
-<br>
-example:
 
-```javascript
-// In the webpack.config.js
-
-module.exports = {
-  ...
-
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
-    }
-  }
-
-  ...
-}
-```
-
-<br>
 
 Once you have installed it, you can use the following simple APIs.
-
 
 ---
 

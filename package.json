@@ -1,9 +1,9 @@
 {
   "name": "style-select",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "A JavaScript library for switching CSS.",
   "main": "./dist/style-select.js",
-  "module": "./src/index.js",
+  "module": "./dist/code-line.esm.js",
   "scripts": {
     "dev": "webpack --config build/webpack.dev.js",
     "build": "webpack --config build/webpack.prod.js"
