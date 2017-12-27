@@ -127,11 +127,26 @@ The most important thing is they still have a shared styles which maintained by 
   
 This also represents that above function (i.e., `addText`, `addSeparator`), StyleGroup instance can be used too.
 
+---
 
+## Highlight.js
 
+Well, I need to admit that this plugin was designed to make [Highlight.js](https://github.com/isagalaev/highlight.js) easier to use, but I found it can be further abstracted to the general level. That is why I named it `Style-Select` instead of **Hljs**-Style-Select.
+However, in order to pay tribute to it, StyleGroup has a method named `createHljsSelect`:
+
+```javascript
+var select = yourStyleGroup.createHljsSelect("#elementId");
+```
+
+This is just a Syntax Sugar:
   
+```javascript
+var select = yourStyleGroup.createSelect("#elementId")
 
-
+// All Highlight.js style
+select.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+['agate', 'androidstudio', 'arduino-light', 'arta', ...], true)
+```
 
 
 
