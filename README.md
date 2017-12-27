@@ -15,12 +15,10 @@ However, the style I like doesn't mean that other users will also like it.
 Style-Select makes things easy:
 <img src="demo/img/hljs-style-select.png" alt="hljs-style-select.png" width="500px">
 
-<br>
-
 HTTP(s) requests are sent only when new styles are selected, rather than redundant prefetch.
-Of course, it can be used not only for Highlight.js but **for any styles**.
+Of course, it can be used not only for Highlight.js but **for any style group**.
 
-See more demos [here](https://js-zheng.github.io/style-select/demo/).
+See more demos [here](https://js-zheng.github.io/Style-Select/demo/).
 
 ---
 
@@ -28,8 +26,7 @@ See more demos [here](https://js-zheng.github.io/style-select/demo/).
 
 
 ### HTML
-Before everything starts, you have to **load [Vue.js](https://github.com/vuejs/vue) first**!  
-Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redundant loading.
+Before everything starts, you have to **load [Vue.js](https://github.com/vuejs/vue) first**! Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redundant loading.
 
 ```html
 <html>
@@ -40,6 +37,8 @@ Style-Select treats Vue as peer dependency and doesn't bundle it to prevent redu
   ...
 <head>
 ```
+
+<br>
  
 ### NPM
 ```
@@ -60,20 +59,15 @@ The main concept of Style-Select is to create a **style group**:
 ```javascript
 var yourStyleGroup = StyleSelect.createStyleGroup('groupId');
 ```
+This is purely a container and will **not** cause any **page render**.
 
-This is purely a container and will **not** cause any **page render**. 
+<br>
 
-In fact, StyleGroup is just a vue instance, so you can still mount it on any HTML element (optional). This will be useful for external access to information, such `currentStyleName`, `cssPrefix`, `stylesList`, ..., cookieOptions.
-```javascript
-yourStyleGroup.$mount(domElement or domSelector)
-```
-
-Detail Usage:
+More Detail Usage:
 ```javascript
 // @returns a vue instance
 function createStyleGroup (groupId, hintText = '--please choose--', cssPrefix = 'style-select', supportNoneStyle = true)
 ```
-<br>
 
 ### Add Styles
 
@@ -85,12 +79,11 @@ Once the StyleGroup is created, you can start adding styles to it.
  * @param styleNames -- {Array}
  * @param supportMinCss -- If the file extension exists `.min`, it must be set to true
  * 
- * @returns true if styles are added successfully.
+ * @returns true if styles are is added successfully.
  */
 yourStyleGroup.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
   ['agate', 'dracula', 'vs2015'], true);
 ```
-<br>
 
 ### Default Style
 
@@ -103,7 +96,7 @@ yourStyleGroup.setDefaultStyle(baseUrl, name, supportMinCss);
 ```
 It should be noted that, unlike `addStyles`, the second parameter (i.e., name) needs to be put into a **string**.
 
-<br>
+
 
 ### StyleSelect
 
@@ -118,9 +111,9 @@ var select = yourStyleGroup.createSelect("#elementId");
 var select2 = yourStyleGroup.createSelect(domElement);
 ```
 
-Even you can add some private styles, text or separator to each menu:
+<br>
 
-<img src="demo/img/select-menu.png" alt="select-menu.png" width="350px">
+Even you can add some private styles, text or separator to each menu:
 
 ```javascript
 select.addStyles('', ['pink', 'blue'], false);
@@ -133,3 +126,28 @@ select.addSeparator();
 The most important thing is they still have a shared styles which maintained by StyleGroup.  
   
 This also represents that above function (i.e., `addText`, `addSeparator`), StyleGroup instance can be used too.
+
+---
+
+## Highlight.js
+
+Well, I need to admit that this plugin was designed to make [Highlight.js](https://github.com/isagalaev/highlight.js) easier to use, but I found it can be further abstracted to the general level. That is why I named it `Style-Select` instead of **Hljs**-Style-Select.
+However, in order to pay tribute to it, StyleGroup has a method named `createHljsSelect`:
+
+```javascript
+var select = yourStyleGroup.createHljsSelect("#elementId");
+```
+
+This is just a Syntax Sugar:
+  
+```javascript
+var select = yourStyleGroup.createSelect("#elementId")
+
+// All Highlight.js style
+select.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
+['agate', 'androidstudio', 'arduino-light', 'arta', ...], true)
+```
+
+
+
+
