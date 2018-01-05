@@ -1,9 +1,10 @@
 import Vue from 'vue/dist/vue.esm'
 import Cookies from 'js-cookie'
 
+let env = process.env;
+if (env.NODE_ENV !== 'production')
+  console.log(`==== ${env.NAME} ${env.NODE_ENV} v${env.VERSION} ====`);
 
-var env = process.env;
-console.log(`==== ${env.NAME} ${env.NODE_ENV} v${env.VERSION} ====`);
 
 export default {
   createStyleGroup: function (groupId, hintText = '--please choose--', cssPrefix = 'style-select', supportNoneStyle = true) {
@@ -126,10 +127,10 @@ export default {
           addText(text, this.state.stylesList);
         },
         createSelect(el) {
-          return new StyleSelect().$mount(el);
+          return new Select().$mount(el);
         },
         createHljsSelect(el) {
-          let hljsSelect = new StyleSelect();
+          let hljsSelect = new Select();
           hljsSelect.addStyles('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/',
             ['agate', 'androidstudio', 'arduino-light', 'arta', 'ascetic', 'atelier-cave-dark', 'atelier-cave-light', 'atelier-dune-dark', 'atelier-dune-light', 'atelier-estuary-dark', 'atelier-estuary-light', 'atelier-forest-dark', 'atelier-forest-light', 'atelier-heath-dark', 'atelier-heath-light', 'atelier-lakeside-dark', 'atelier-lakeside-light', 'atelier-plateau-dark', 'atelier-plateau-light', 'atelier-savanna-dark', 'atelier-savanna-light', 'atelier-seaside-dark', 'atelier-seaside-light', 'atelier-sulphurpool-dark', 'atelier-sulphurpool-light', 'atom-one-dark', 'atom-one-light', 'brown-paper', 'codepen-embed', 'color-brewer', 'darcula', 'dark', 'darkula', 'default', 'docco', 'dracula', 'far', 'foundation', 'github-gist', 'github', 'googlecode', 'grayscale', 'gruvbox-dark', 'gruvbox-light', 'hopscotch', 'hybrid', 'idea', 'ir-black', 'kimbie.dark', 'kimbie.light', 'magula', 'mono-blue', 'monokai-sublime', 'monokai', 'obsidian', 'ocean', 'paraiso-dark', 'paraiso-light', 'pojoaque', 'purebasic', 'qtcreator_dark', 'qtcreator_light', 'railscasts', 'rainbow', 'routeros', 'school-book', 'solarized-dark', 'solarized-light', 'sunburst', 'tomorrow-night-blue', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'tomorrow-night', 'tomorrow', 'vs', 'vs2015', 'xcode', 'xt256', 'zenburn']
             , true);
@@ -173,7 +174,7 @@ export default {
     });
 
     // The constructor of VueJS.
-    let StyleSelect = Vue.extend({
+    let Select = Vue.extend({
       data: function () {
         return {
           privateStylesList: [],
@@ -196,7 +197,7 @@ export default {
           }
 
           if (this.compareFunction) {
-            var oneDimensionStylesList = this.toOneDimensionStylesList(totalStylesList);
+            let oneDimensionStylesList = this.toOneDimensionStylesList(totalStylesList);
             return oneDimensionStylesList.sort(this.compareFunction);
           } else {
             return totalStylesList;
@@ -266,8 +267,7 @@ export default {
     </select>`
     });
 
-
-    StyleSelect.prototype.onSelected = function (listIndex, styleIndex) {
+    Select.prototype.onSelected = function (listIndex, styleIndex) {
       let styles = this.stylesList[listIndex];
       let s = {
         baseUrl: styles.baseUrl,
@@ -279,29 +279,29 @@ export default {
       vm.setStyle(s);
     };
 
-    StyleSelect.prototype.onNoSelected = function () {
+    Select.prototype.onNoSelected = function () {
       vm.setStyle(null);
     };
 
-    StyleSelect.prototype.addStyles = function (baseUrl, names, supportMinCss = false) {
+    Select.prototype.addStyles = function (baseUrl, names, supportMinCss = false) {
       return addStyles(this.privateStylesList, baseUrl, names, supportMinCss);
     };
 
-    StyleSelect.prototype.addSeparator = function (length) {
+    Select.prototype.addSeparator = function (length) {
       addSeparator(length, this.privateStylesList);
     };
 
-    StyleSelect.prototype.addText = function (text) {
+    Select.prototype.addText = function (text) {
       addText(text, this.privateStylesList);
     };
 
-    StyleSelect.prototype.removeStyle = function (baseUrl, name) {
+    Select.prototype.removeStyle = function (baseUrl, name) {
       // Prevent to use stylesList.
       return removeStyle(this.privateStylesList, baseUrl, name);
     };
 
     // Wasting space, but conducive to sorting.
-    StyleSelect.prototype.toOneDimensionStylesList = function (stylesList) {
+    Select.prototype.toOneDimensionStylesList = function (stylesList) {
       let result = [];
       for (let i = 0, styles; styles = stylesList[i]; i++) {
 
@@ -317,8 +317,7 @@ export default {
       return result;
     };
 
-    StyleSelect.prototype.moveIndex = function (increment = true) {
-
+    Select.prototype.moveIndex = function (increment = true) {
       let currentIndex = this.selected;
       if (currentIndex === null) return;
 
@@ -399,7 +398,6 @@ export default {
       for (let i = 0; i < length; i++) text += '─';
       addText(text, stylesList);
     }
-
 
     function addText(text, stylesList) {
       let textOption = {names: [text], disabled: true};
